@@ -69,9 +69,9 @@ func buildQuery() *graphql.Object {
 			},
 
 			/*
-				curl -g 'http://localhost:8080/graphql?query={todoList{id,text,done}}'
+				curl -g 'http://localhost:8080/graphql?query={todos{id,text,done}}'
 			*/
-			"todoList": &graphql.Field{
+			"todos": &graphql.Field{
 				Type:        graphql.NewList(todoType),
 				Description: "List of todos",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {

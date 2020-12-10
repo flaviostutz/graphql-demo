@@ -9,13 +9,12 @@ RUN go mod download
 
 #now build source code
 ADD / /app
-RUN go build -x -o /todo-service
+RUN go build -x -o /todo-graphql
 
 
 
 FROM golang:1.15.6-alpine3.12
 EXPOSE 3000
 ENV TODO_SERVICE_URL       ''
-COPY --from=BUILD /todo-service /
-ADD startup.sh /
-CMD [ "/startup.sh" ]
+COPY --from=BUILD /todo-graphql /
+CMD [ "/todo-graphql" ]

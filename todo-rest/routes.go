@@ -47,6 +47,10 @@ func makeRoutes(todo Todo) http.Handler {
 			c.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("Couldn't parse body contents. err=%s", err)})
 			return
 		}
+		if nitem.Title == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("'title' is required")})
+			return
+		}
 		item := todo.Create(nitem)
 		c.Writer.Header().Add("Location", os.Getenv("BASE_LOCATION_URL")+"/todos/"+item.ID)
 		c.JSON(201, item)

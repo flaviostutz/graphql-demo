@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	ghandler "github.com/flaviostutz/graphql-handler"
+	"github.com/graphql-go/handler"
 )
 
 type Opt struct {
@@ -15,9 +15,9 @@ type Opt struct {
 var opt Opt
 
 func main() {
-	opt.TodoRestURL = os.Getenv("TODO_REST_URL")
+	opt.TodoRestURL = os.Getenv("TODO_SERVICE_URL")
 	if opt.TodoRestURL == "" {
-		fmt.Println("env TODO_REST_URL is required")
+		fmt.Println("env TODO_SERVICE_URL is required")
 		os.Exit(1)
 	}
 
@@ -27,7 +27,14 @@ func main() {
 		os.Exit(2)
 	}
 
-	http.HandleFunc("/graphql", ghandler.NewGraphQLHandler(schema, true))
+	h := handler.New(&handler.Config{
+		Schema:     &schema,
+		Pretty:     true,
+		GraphiQL:   false,
+		Playground: true,
+	})
+
+	http.Handle("/", h)
 
 	// Display some basic instructions
 	fmt.Println("Now server is running on port 4000")
