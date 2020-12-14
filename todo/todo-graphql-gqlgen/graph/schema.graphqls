@@ -1,0 +1,53 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+#
+type Query {
+  # Get single todo
+  todo(id: String): Todo
+
+  # List of todos
+  todos: [Todo]
+}
+
+#
+type Mutation {
+  # Create new todo
+  createTodo(title: String, text: String, user: String, order: Int): Todo
+
+  # Delete existing todo
+  deleteTodo(id: String!): String
+
+  # Update existing todo
+  updateTodo(
+    text: String
+    order: Int
+    id: String!
+    done: Boolean
+    user: String
+    title: String
+  ): String
+}
+
+#
+type Todo @key(fields: "id") {
+  #
+  done: Boolean
+
+  #
+  id: String
+
+  #
+  order: Int
+
+  #
+  text: String
+
+  #
+  title: String
+
+  #
+  user: String
+}

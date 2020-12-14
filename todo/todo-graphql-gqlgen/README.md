@@ -1,0 +1,12 @@
+# todo-graphql-gqlgen
+
+GraphQL endpoint in front of todo rest services using gqlgen library
+
+If you change graphql schema at graph/schema.graphqls, regenerate snippets with `go run github.com/99designs/gqlgen`
+
+## Usage
+
+```sh
+docker-compose up -d
+```
+

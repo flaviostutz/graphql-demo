@@ -2,18 +2,53 @@ version: '3.6'
 
 services:
 
+
+  # graphql-gateway:
+  #   build: gateway/federation-apollo/.
+  #   ports:
+  #     - "5000:5000"
+  #   environment:
+  #     - FEDERATED_GRAPHQL_URLS=http://host.docker.internal:4001/graphql
+
+  graphql-gateway:
+    image: graphql/gateway
+    ports:
+      - 5000:80
+    environment:
+      - GRAPHQL_URL_0=http://host.docker.internal:4000/graphql
+      - GRAPHQL_URL_1=http://host.docker.internal:4010/graphql
+      - GRAPHQL_UPDATE_GATEWAY=true
+      - GRAPHQL_UPDATE_GATEWAY_INTERVAL_MS=10000
+
+
+
+  # todo-graphql-proxy:
+  #   image: flaviostutz/nginx-cache-proxy
+  #   ports:
+  #     - 4001:80
+  #   environment:
+  #     - PROXY_PASS_URL=http://host.docker.internal:4000
+  #     - REQUEST_LOG_LEVEL=body
+
+  todo-graphql:
+    build: todo/todo-graphql-gqlgen/.
+    ports:
+      - "4000:4000"
+    environment:
+      - TODO_SERVICE_URL=http://host.docker.internal:3000
+  
   todo-rest:
-    build: todo-rest/.
+    build: todo/todo-rest/.
     ports:
       - "3000:3000"
     environment:
       - BASE_LOCATION_URL=http://localhost:3000
 
-  todo-graphql:
-    build: todo-graphql-go/.
+
+
+
+  user-graphql:
+    build: user/user-graphql-gqlgen/.
     ports:
-      - "4000:4000"
-    environment:
-      - TODO_SERVICE_URL=http://host.docker.internal:3000
-
-
+      - "4010:4000"
+  
